@@ -1,0 +1,10 @@
+.classpath
+.project
+.settings/org.eclipse.core.resources.prefs
+.settings/org.eclipse.jdt.core.prefs
+.settings/org.eclipse.m2e.core.prefs
+target/classes/META-INF/MANIFEST.MF
+target/classes/META-INF/maven/com.clueless/dice/pom.properties
+target/classes/META-INF/maven/com.clueless/dice/pom.xml
+target/classes/com/clueless/dice/DiceProblem21$1.class
+target/classes/com/clueless/dice/DiceProblem21.class
