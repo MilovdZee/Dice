@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.IntStream;
 
@@ -39,6 +40,13 @@ public class DiceProblem21 {
     private static final int TOTAL_NUMBER_OF_TRIES = 100000;
     private static final int DECIMALS = 50;
 
+    List<Integer> randoms = new ArrayList<>();
+    {
+        for (int i = 0; i < 1000000; i++) {
+            randoms.add(new Double(Math.random() * 6 + 1).intValue());
+        }
+    }
+
     public static void main(String[] args) throws ExecutionException {
 
         // Calculate it
@@ -49,14 +57,8 @@ public class DiceProblem21 {
         // Do it
         long startTime = System.currentTimeMillis();
         IntStream s = IntStream.range(0, 20);
-        s.forEach(i -> {
-            long start = System.currentTimeMillis();
-            DiceProblem21 diceProblem21 = new DiceProblem21();
-            System.out.println("start time " + i);
-            diceProblem21.doAction();
-            long stopTime = System.currentTimeMillis();
-            long elapsedTime = stopTime - start;
-            System.out.println("run time thread " + i + ": " + elapsedTime + "ms");
+        s.parallel().forEach(i -> {
+            doRounds();
         });
 
         long stopTime = System.currentTimeMillis();
@@ -64,7 +66,9 @@ public class DiceProblem21 {
         System.out.println("run time: " + elapsedTime + "ms");
     }
 
-    private void doAction() {
+    private static void doRounds() {
+        Random random = new Random();
+
         int totalThrows = 0;
         int tries = TOTAL_NUMBER_OF_TRIES;
         while (tries-- > 0) {
@@ -72,7 +76,7 @@ public class DiceProblem21 {
             int n = NUMBER_OF_DICE;
             do {
                 rounds++;
-                List<Integer> dice = throwDice(n);
+                List<Integer> dice = throwDice(random, n);
                 n -= countDiceOnValue(dice, 6);
             } while (n > 0);
             // System.out.println("Rounds: " + rounds);
@@ -100,10 +104,11 @@ public class DiceProblem21 {
         return count;
     }
 
-    private static List<Integer> throwDice(int numberOfDice) {
+    private static List<Integer> throwDice(Random random, int numberOfDice) {
         List<Integer> thrown = new ArrayList<>();
         for (int i = 0; i < numberOfDice; i++) {
-            int value = (int) (Math.random() * 6.0 + 1.0);
+            // int value = (int) (Math.random() * 6.0 + 1.0);
+            int value = random.nextInt(6) + 1;
             thrown.add(value);
         }
         return thrown;
