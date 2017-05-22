@@ -36,16 +36,10 @@ import com.google.common.cache.LoadingCache;
  *
  */
 public class DiceProblem21 {
+    private static final String NUMBER_OF_CORES = "8";
     private static final int NUMBER_OF_DICE = 50;
     private static final int TOTAL_NUMBER_OF_TRIES = 100000;
     private static final int DECIMALS = 50;
-
-    List<Integer> randoms = new ArrayList<>();
-    {
-        for (int i = 0; i < 1000000; i++) {
-            randoms.add(new Double(Math.random() * 6 + 1).intValue());
-        }
-    }
 
     public static void main(String[] args) throws ExecutionException {
 
@@ -55,6 +49,9 @@ public class DiceProblem21 {
         System.out.println();
 
         // Do it
+        // Choose a number of cores to use
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", NUMBER_OF_CORES);
+        
         long startTime = System.currentTimeMillis();
         IntStream s = IntStream.range(0, 20);
         s.parallel().forEach(i -> {
